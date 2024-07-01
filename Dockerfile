@@ -1,5 +1,5 @@
 # 2020/10/14最新versionを取得
-FROM golang:1.22.4-darwin
+FROM golang:1.23rc1-bullseye
 # ワーキングディレクトリの設定
 WORKDIR /goproject
 # ホストのファイルをコンテナの作業ディレクトリに移行

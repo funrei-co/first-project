@@ -2,7 +2,7 @@
 
 services:
   backend:
-    image: golang:1.22.4-darwin
+    image: golang:1.23rc1-bullseye
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -10,3 +10,30 @@ services:
       - 8080:8080
     volumes:
       - ./goproject:/app
+    stdin_open: true
+    tty: true
+
+  frontend:
+    image: node:lts-slim
+    ports:
+      - 3000:3000
+    volumes:
+      - ./next.js:/app
+    stdin_open: true
+    tty: true
+
+  mysql :
+    container_name: MysqlDataBase
+    build: .
+    environment:
+      MYSQL_ROOT_PASSWORD: rootPass
+      MYSQL_DATABASE: test_data
+      MYSQL_USER: testUser
+      MYSQL_PASSWORD: testPass
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./db/data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    stdin_open: true
+    tty: true

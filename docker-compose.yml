@@ -1,0 +1,44 @@
+
+
+services:
+  backend:
+    image: golang:1.23rc1-bullseye
+    ports:
+      - 8080:8080
+    volumes:
+      - ./backend/app:/app
+    stdin_open: true
+    tty: true
+    networks:
+      - chat-service
+
+  frontend:
+    image: node:22.3.0
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/app:/app
+    stdin_open: true
+    tty: true
+    networks:
+      - chat-service
+
+  mysql:
+    image: mysql:8.4.1
+    build: .
+    environment:
+      MYSQL_DATABASE: chat_develop
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./db/data:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    stdin_open: true
+    tty: true
+    networks:
+      - chat-service
+
+networks:
+  chat-service:
+    external : true

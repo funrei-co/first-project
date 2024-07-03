@@ -3,13 +3,10 @@
 services:
   backend:
     image: golang:1.23rc1-bullseye
-    build:
-      context: .
-      dockerfile: ./Dockerfile
     ports:
       - 8080:8080
     volumes:
-      - ./backend:/app
+      - ./backend/app:/app
     stdin_open: true
     tty: true
     networks:
@@ -20,7 +17,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./frontend:/app
+      - ./frontend/app:/app
     stdin_open: true
     tty: true
     networks:

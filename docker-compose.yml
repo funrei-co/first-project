@@ -9,27 +9,32 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./goproject:/app
+      - ./go:/app
     stdin_open: true
     tty: true
+    networks:
+      - external
 
   frontend:
-    image: node:lts-slim
+    image: node:22.3.0
     ports:
       - 3000:3000
     volumes:
-      - ./next.js:/app
+      - ./js:/app
     stdin_open: true
     tty: true
+    networks:
+      - external
 
-  mysql :
-    container_name: MysqlDataBase
+  mysql:
+    container_name: sqldevelop
+    image: mysql:oracle
     build: .
     environment:
       MYSQL_ROOT_PASSWORD: rootPass
-      MYSQL_DATABASE: test_data
-      MYSQL_USER: testUser
-      MYSQL_PASSWORD: testPass
+      MYSQL_DATABASE: chat_develop
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: chatpass001
       TZ: 'Asia/Tokyo'
     volumes:
       - ./db/data:/var/lib/mysql
@@ -37,3 +42,11 @@ services:
       - '3306:3306'
     stdin_open: true
     tty: true
+    networks:
+      - internal
+
+networks:
+  internal:
+    internal: true
+  external:
+   name: api_network

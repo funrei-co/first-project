@@ -1,18 +1,24 @@
 package main
 
 import (
+    //"fmt"
     "database/sql"
-    "fmt"
     _ "github.com/go-sql-driver/mysql"
+    "log"
 )
-
-func main()  {
+func main() {
     // MySQL データベースへの接続文字列
-    db, _ := sql.Open("mysql", "root@tcp(myapp-mysql-1:3306)/chat_develop")
-    var user_Id, user_Name string
+    db, err := sql.Open("mysql", "root@tcp(myapp-mysql-1:3306)/chat_develop")
     
-    db.QueryRow("SELECT * FROM user where user_Id = 'ksasaki';",).Scan(&user_Id, &user_Name)
-    fmt.Println(user_Id, user_Name)
+    if err != nil {
+      log.Fatal(err)
     }
+    defer db.Close()
 
-
+    // データベースへの接続をテストする
+    err = db.Ping()
+    if err != nil {
+      log.Fatal(err)
+    }
+    log.Println("Connected to MySQL database!")
+}

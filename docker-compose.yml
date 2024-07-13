@@ -2,6 +2,8 @@
 
 services:
   backend:
+    depends_on:
+       - mysql
     image: golang:1.23rc1-bullseye
     ports:
       - 8080:8080
